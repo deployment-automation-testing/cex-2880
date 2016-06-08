@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <rule>
+        <name>offlineHomeInspection</name>
+        <uuid>3e94ce72-a9d1-44ee-a9de-bdc2173984d7</uuid>
+        <description>Collect information about a home inspection</description>
+        <parentUuid>_a-0000dac5-a263-8000-a06f-010000010000_2783</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>fn!load(
+  with(
+
+      /* Address Components */
+    local!addressComponents: {
+      #&quot;SYSTEM_SYSRULES_textField&quot;(
+        label: &quot;Address&quot;,
+        labelPosition: &quot;ABOVE&quot;,
+        /* The saveInto parameter must be configured in order to save a value */
+        value: ri!homeOwnerAddress,
+        saveInto: ri!homeOwnerAddress,
+        refreshAfter: &quot;UNFOCUS&quot;,
+        required: true,
+        readonly: ri!isReadOnly,
+        validations: {},
+        align: &quot;LEFT&quot;
+        ),
+      #&quot;SYSTEM_SYSRULES_textField&quot;(
+        label: &quot;City&quot;,
+        labelPosition: &quot;ABOVE&quot;,
+        /* The saveInto parameter must be configured in order to save a value */
+        value: ri!homeOwnerCity,
+        saveInto: ri!homeOwnerCity,
+        refreshAfter: &quot;UNFOCUS&quot;,
+        required: true,
+        readonly: ri!isReadOnly,
+        validations: {},
+        align: &quot;LEFT&quot;
+      ),
+      #&quot;SYSTEM_SYSRULES_textField&quot;(
+        label: &quot;State/Province&quot;,
+        labelPosition: &quot;ABOVE&quot;,
+        /* The saveInto parameter must be configured in order to save a value */
+        value: ri!homeOwnerState,
+        saveInto: ri!homeOwnerState,
+        refreshAfter: &quot;UNFOCUS&quot;,
+        required: true,
+        readonly: ri!isReadOnly,
+        validations: {},
+        align: &quot;LEFT&quot;
+      ),
+      #&quot;SYSTEM_SYSRULES_textField&quot;(
+        label: &quot;Zip/Postal Code&quot;,
+        labelPosition: &quot;ABOVE&quot;,
+        /* The saveInto parameter must be configured in order to save a value */
+        value: ri!homeOwnerPostal,
+        saveInto: ri!homeOwnerPostal,
+        refreshAfter: &quot;UNFOCUS&quot;,
+        required: true,
+        readonly: ri!isReadOnly,
+        validations: {},
+        align: &quot;LEFT&quot;
+      )
+    },
+
+    /* Inspection Components */
+    local!showDropDownInspectionType: #&quot;_a-0000dac6-8f8c-8000-8d64-010000010000_2785&quot;,
+    local!inspectionComponents: {
+      if (local!showDropDownInspectionType,
+        #&quot;SYSTEM_SYSRULES_dropdownField&quot;(
+          label: &quot;Inspection Type&quot;,
+          labelPosition: &quot;ABOVE&quot;,
+          choiceLabels: {&quot;Mold&quot;, &quot;Insulation&quot;, &quot;Water Damage&quot;, &quot;Efficiency&quot;},
+          placeholderLabel: &quot;--- Select Inspection Type ---&quot;,
+          choiceValues: {&quot;Mold&quot;, &quot;Insulation&quot;, &quot;Water Damage&quot;, &quot;Efficiency&quot;},
+          value: ri!inspectionType,
+          saveInto: ri!inspectionType,
+          required: true,
+          readonly: ri!isReadOnly,
+          disabled: ri!isReadOnly,
+          validations: {}
+        ),
+        #&quot;SYSTEM_SYSRULES_radioButtonField&quot;(
+          label: &quot;Inspection Type&quot;,
+          labelPosition: &quot;ABOVE&quot;,
+          choiceLabels: {&quot;Mold&quot;, &quot;Insulation&quot;, &quot;Water Damage&quot;, &quot;Efficiency&quot;},
+          choiceValues: {&quot;Mold&quot;, &quot;Insulation&quot;, &quot;Water Damage&quot;, &quot;Efficiency&quot;},
+          value: if (isnull(ri!inspectionType), &quot;Mold&quot;, ri!inspectionType),
+          saveInto: ri!inspectionType,
+          required: true,
+          readonly: ri!isReadOnly,
+          disabled: ri!isReadOnly,
+          validations: {}
+        )
+      ),
+      #&quot;SYSTEM_SYSRULES_dateField&quot;(
+        label: &quot;Inspection Date&quot;,
+        labelPosition: &quot;ABOVE&quot;,
+        value: today(),
+        saveInto: ri!inspectionDate,
+        validations: {},
+        readonly: ri!isReadOnly,
+        align: &quot;LEFT&quot;
+      ),
+    },
+
+    /* Requested By Component */
+    local!requestedByComponent: #&quot;SYSTEM_SYSRULES_pickerFieldUsers&quot;(
+      label: if (#&quot;_a-0000dac6-8f8c-8000-8d64-010000010000_2785&quot;, &quot;Requested By&quot;, &quot;Inspector&quot;),
+      labelPosition: &quot;ABOVE&quot;,
+      value: ri!requestedBy,
+      /* The saveInto parameter must be configured in order to save a value */
+      saveInto: ri!requestedBy,
+      required: false,
+      readonly: true,
+      validations: {}
+    ),
+
+    /* Home Owner Contact Info Components */
+    local!olderGenerationHomeOwner: #&quot;_a-0000dac6-8f8c-8000-8d64-010000010000_2785&quot;,
+    local!homeOwnerContactInfoComponents: {
+      #&quot;SYSTEM_SYSRULES_textField&quot;(
+        label: &quot;Homeowner Name&quot;,
+        labelPosition: &quot;ABOVE&quot;,
+        /* The saveInto parameter must be configured in order to save a value */
+        value: ri!homeOwnerName,
+        saveInto: ri!homeOwnerName,
+        refreshAfter: &quot;UNFOCUS&quot;,
+        required: true,
+        readonly: ri!isReadOnly,
+        validations: {},
+        align: &quot;LEFT&quot;
+      ),
+      #&quot;SYSTEM_SYSRULES_textField&quot;(
+        label: &quot;Homeowner Email Address&quot;,
+        labelPosition: &quot;ABOVE&quot;,
+        /* The saveInto parameter must be configured in order to save a value */
+        value: ri!homeOwnerEmail,
+        saveInto: ri!homeOwnerEmail,
+        refreshAfter: &quot;UNFOCUS&quot;,
+        readonly: ri!isReadOnly,
+        validations: {},
+        align: &quot;LEFT&quot;
+      ),
+      if (local!olderGenerationHomeOwner,
+        {
+          #&quot;SYSTEM_SYSRULES_textField&quot;(
+            label: &quot;Telephone&quot;,
+            labelPosition: &quot;ABOVE&quot;,
+            value: ri!homeOwnerTelephone,
+            saveInto: ri!homeOwnerTelephone,
+            refreshAfter: &quot;UNFOCUS&quot;,
+            readonly: ri!isReadOnly,
+            validations: {},
+            align: &quot;LEFT&quot;
+          )
+        },
+        {
+          /* Nothing */
+        }
+      )
+    },
+
+    /* Home Image Components: Read-only &amp; Editable */
+    local!readonlyHomeImageComponent: #&quot;SYSTEM_SYSRULES_imageField&quot;(
+      label: &quot;Images of Home&quot;,
+      labelPosition: &quot;ABOVE&quot;,
+      size: &quot;STANDARD&quot;,
+      images: #&quot;SYSTEM_SYSRULES_documentImage&quot;(if(isnull(ri!homeImage),
+                  #&quot;_a-0000dad0-1103-8000-05ef-010000010000_2829&quot;,
+                  ri!homeImage)
+      )
+    ),
+    local!editableHomeImageComponent: #&quot;SYSTEM_SYSRULES_fileUploadField&quot;(
+      label: &quot;Images of Home&quot;,
+      labelPosition: &quot;ABOVE&quot;,
+      instructions: &quot;Add videos and/or images to show the state of the home during inspection.&quot;,
+      target: #&quot;_a-0000dac5-a263-8000-a06f-010000010000_2784&quot;,
+      readonly: ri!isReadOnly,
+      value: ri!homeImage,
+      saveInto: ri!homeImage,
+      validations: {}
+    ),
+    local!homeImageComponent: if (ri!isReadOnly,
+        local!readonlyHomeImageComponent,
+        local!editableHomeImageComponent
+    ),
+
+    /* Signature Components: Read-only &amp; Editable */
+    local!readonlySignatureComponent:#&quot;SYSTEM_SYSRULES_imageField&quot;(
+      label: &quot;Homeowner Signature&quot;,
+      labelPosition: &quot;ABOVE&quot;,
+      size: &quot;STANDARD&quot;,
+      images: #&quot;SYSTEM_SYSRULES_documentImage&quot;(if(isnull(ri!signature),
+                  #&quot;_a-0000dad0-1103-8000-05ef-010000010000_2831&quot;,
+                  ri!signature)
+      )
+    ),
+    local!editableSignatureComponent:#&quot;SYSTEM_SYSRULES_fileUploadField&quot;(
+      label: &quot;Homeowner Signature&quot;,
+      labelPosition: &quot;ABOVE&quot;,
+      target: #&quot;_a-0000dac5-a263-8000-a06f-010000010000_2784&quot;,
+      value: ri!signature,
+      readonly: ri!isReadOnly,
+      saveInto: ri!signature,
+      validations: {}
+    ),
+    local!signatureComponent:if (ri!isReadOnly,
+      local!readonlySignatureComponent,
+      local!editableSignatureComponent
+    ),
+
+    /* Field Notes Component */
+    local!fieldNotesComponent:#&quot;SYSTEM_SYSRULES_paragraphField&quot;(
+      label: &quot;Field Notes&quot;,
+      labelPosition: &quot;ABOVE&quot;,
+      value: ri!notes,
+      readonly: ri!isReadOnly,
+      saveInto: ri!notes,
+      refreshAfter: &quot;UNFOCUS&quot;,
+      validations: {}
+    ),
+
+    /* The actual form for the Home Inspection */
+    #&quot;SYSTEM_SYSRULES_formLayout&quot;(
+      label: &quot;Home Inspection&quot;,
+      instructions: &quot;Use this form on a mobile device to perform routine home inspections. The mobile device need not have an internet connection to complete this form.&quot;
+    ,
+      firstColumnContents: {
+          #&quot;SYSTEM_SYSRULES_sectionLayout&quot;(
+            firstColumnContents: {
+              local!requestedByComponent,
+              local!inspectionComponents,
+              local!homeOwnerContactInfoComponents,
+              local!addressComponents
+            },
+            secondColumnContents: {}
+          ),
+          #&quot;SYSTEM_SYSRULES_sectionLayout&quot;(
+            label: &quot;Inspection Notes&quot;,
+            firstColumnContents: {
+              local!homeImageComponent,
+              local!fieldNotesComponent,
+              local!signatureComponent
+          },
+          secondColumnContents: {}
+          )
+      },
+      secondColumnContents: {},
+      buttons: #&quot;SYSTEM_SYSRULES_ButtonLayout&quot;(
+        primaryButtons: {
+          #&quot;SYSTEM_SYSRULES_ButtonWidgetSubmit&quot;(
+            label: &quot;Submit&quot;,
+            style: &quot;PRIMARY&quot;,
+            saveInto: {}
+          )
+        }
+      ),
+      validations: {}
+    )
+  )
+)
+</definition>
+        <namedTypedValue>
+            <name>requestedBy</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>inspectionType</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>inspectionDate</name>
+            <type>
+                <name>date</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>homeOwnerName</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>homeOwnerEmail</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>homeOwnerAddress</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>homeOwnerCity</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>homeOwnerState</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>homeOwnerPostal</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>homeImage</name>
+            <type>
+                <name>CollaborationDocument</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>notes</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>signature</name>
+            <type>
+                <name>CollaborationDocument</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>isReadOnly</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>homeOwnerTelephone</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>true</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role allowForAll="false" inherit="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="true" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role allowForAll="false" inherit="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+</contentHaul>

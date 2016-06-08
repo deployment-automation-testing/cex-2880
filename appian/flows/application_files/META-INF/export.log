@@ -1,0 +1,11 @@
+Success (1):
+thirdPartyCredentials 1 112e4001-88ce-4df0-85c0-434f48e1b3bf "damtest1"
+
+Trace:
+2016-04-19 15:01:43.903 DEBUG thirdPartyCredentials 1 112e4001-88ce-4df0-85c0-434f48e1b3bf Begin transport.
+2016-04-19 15:01:43.903 DEBUG thirdPartyCredentials 1 112e4001-88ce-4df0-85c0-434f48e1b3bf Retrieving object data.
+2016-04-19 15:01:43.91 DEBUG thirdPartyCredentials 1 112e4001-88ce-4df0-85c0-434f48e1b3bf Setting uuids of object references.
+2016-04-19 15:01:43.935 DEBUG thirdPartyCredentials 1 112e4001-88ce-4df0-85c0-434f48e1b3bf Registering export properties.
+2016-04-19 15:01:43.937 DEBUG thirdPartyCredentials 1 112e4001-88ce-4df0-85c0-434f48e1b3bf Exporting binary resources.
+2016-04-19 15:01:43.937 DEBUG thirdPartyCredentials 1 112e4001-88ce-4df0-85c0-434f48e1b3bf Serializing object to XML.
+2016-04-19 15:01:43.937 DEBUG thirdPartyCredentials 1 112e4001-88ce-4df0-85c0-434f48e1b3bf Object transported.

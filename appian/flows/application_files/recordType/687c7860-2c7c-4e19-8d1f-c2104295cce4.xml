@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <recordType name="Home Inspection" a:uuid="687c7860-2c7c-4e19-8d1f-c2104295cce4">
+        <a:pluralName>Home Inspections</a:pluralName>
+        <a:description>A record that displays information about a Home Inspection.</a:description>
+        <a:urlStub>EdQGig</a:urlStub>
+        <a:source xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:ProcessModel" a:uuid="0002dac5-ac83-8000-a072-010000010000"/>
+        <a:listViewTemplateExpr>#&quot;SYSTEM_SYSRULES_listViewItem&quot;(
+  title:&quot;Home inspection for &quot; &amp; rf!homeOwnerName,
+  details: &quot;Home inspection for &quot; &amp; rf!homeOwnerName &amp; &quot; at city &quot; &amp; rf!homeOwnerCity,
+  image: rf!homeImage,
+  timestamp: todatetime(rf!inspectionDate)
+)
+</a:listViewTemplateExpr>
+        <a:detailViewCfg>
+            <a:nameExpr>=&quot;Summary&quot;</a:nameExpr>
+            <a:uiExpr>=#&quot;3e94ce72-a9d1-44ee-a9de-bdc2173984d7&quot;(rf!requestedBy,
+rf!inspectionType,
+rf!inspectionDate, 
+rf!homeOwnerName, 
+rf!homeOwnerEmail, 
+rf!homeOwnerAddress, 
+rf!homeOwnerCity, 
+rf!homeOwnerState, 
+rf!homeOwnerPostal, 
+rf!homeImage, 
+rf!notes, 
+rf!signature, 
+true(),
+rf!homeOwnerTelephoneNumber
+)</a:uiExpr>
+            <a:visibilityExpr>=true()</a:visibilityExpr>
+            <a:urlStub>summary</a:urlStub>
+            <a:headerExpr></a:headerExpr>
+        </a:detailViewCfg>
+        <a:defaultSortInfo>
+            <field>homeOwnerName</field>
+            <ascending>true</ascending>
+        </a:defaultSortInfo>
+        <a:isSystem>false</a:isSystem>
+        <a:dataSrcExpr></a:dataSrcExpr>
+        <a:facetsListExpr></a:facetsListExpr>
+        <a:defaultFiltersExpr></a:defaultFiltersExpr>
+        <a:layoutType>FEED</a:layoutType>
+        <a:security>32767</a:security>
+    </recordType>
+    <roleMap>
+        <role name="record_type_administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000d615-4c23-8000-da6f-010000010000_7</groupUuid>
+            </groups>
+        </role>
+        <role name="record_type_editor">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000d615-4c23-8000-da6f-010000010000_7</groupUuid>
+            </groups>
+        </role>
+        <role name="record_type_auditor">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000d615-4c23-8000-da6f-010000010000_7</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+</recordTypeHaul>
